@@ -135,7 +135,7 @@ void Watchy::deepSleep() {
 void Watchy::handleButtonPress() {
   uint64_t wakeupBit = esp_sleep_get_ext1_wakeup_status();
   // Menu Button
-  if (wakeupBit & MENU_BTN_MASK) {
+  if (wakeupBit & UP_BTN_MASK) {  // use up because menu button is broken
     if (guiState ==
         WATCHFACE_STATE) { // enter menu state if coming from watch face
       showMenu(menuIndex, false);
@@ -183,18 +183,18 @@ void Watchy::handleButtonPress() {
       return;
     }
   }
-  // Up Button
-  else if (wakeupBit & UP_BTN_MASK) {
-    if (guiState == MAIN_MENU_STATE) { // increment menu index
-      menuIndex--;
-      if (menuIndex < 0) {
-        menuIndex = MENU_LENGTH - 1;
-      }
-      showMenu(menuIndex, true);
-    } else if (guiState == WATCHFACE_STATE) {
-      return;
-    }
-  }
+  // Up Button - reused as menu button
+  // else if (wakeupBit & UP_BTN_MASK) {
+  //   if (guiState == MAIN_MENU_STATE) { // increment menu index
+  //     menuIndex--;
+  //     if (menuIndex < 0) {
+  //       menuIndex = MENU_LENGTH - 1;
+  //     }
+  //     showMenu(menuIndex, true);
+  //   } else if (guiState == WATCHFACE_STATE) {
+  //     return;
+  //   }
+  // }
   // Down Button
   else if (wakeupBit & DOWN_BTN_MASK) {
     if (guiState == MAIN_MENU_STATE) { // decrement menu index
@@ -219,7 +219,7 @@ void Watchy::handleButtonPress() {
     if (millis() - lastTimeout > 5000) {
       timeout = true;
     } else {
-      if (digitalRead(MENU_BTN_PIN) == ACTIVE_LOW) {
+      if (digitalRead(UP_BTN_PIN) == ACTIVE_LOW) {  // menu button is broken, use up button
         lastTimeout = millis();
         if (guiState ==
             MAIN_MENU_STATE) { // if already in menu, then select menu item
@@ -263,15 +263,15 @@ void Watchy::handleButtonPress() {
         } else if (guiState == FW_UPDATE_STATE) {
           showMenu(menuIndex, false); // exit to menu if already in app
         }
-      } else if (digitalRead(UP_BTN_PIN) == ACTIVE_LOW) {
-        lastTimeout = millis();
-        if (guiState == MAIN_MENU_STATE) { // increment menu index
-          menuIndex--;
-          if (menuIndex < 0) {
-            menuIndex = MENU_LENGTH - 1;
-          }
-          showFastMenu(menuIndex);
-        }
+      // } else if (digitalRead(UP_BTN_PIN) == ACTIVE_LOW) {
+      //   lastTimeout = millis();
+      //   if (guiState == MAIN_MENU_STATE) { // increment menu index
+      //     menuIndex--;
+      //     if (menuIndex < 0) {
+      //       menuIndex = MENU_LENGTH - 1;
+      //     }
+      //     showFastMenu(menuIndex);
+      //   }
       } else if (digitalRead(DOWN_BTN_PIN) == ACTIVE_LOW) {
         lastTimeout = millis();
         if (guiState == MAIN_MENU_STATE) { // decrement menu index
