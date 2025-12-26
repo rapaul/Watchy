@@ -89,7 +89,7 @@ public:
   void showAccelerometer();
   void showUpdateFW();
   void showSyncNTP();
-  bool syncNTP();
+  virtual bool syncNTP();
   bool syncNTP(long gmt);
   bool syncNTP(long gmt, String ntpServer);
   void setTime();

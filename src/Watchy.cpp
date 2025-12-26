@@ -455,7 +455,7 @@ void Watchy::setTime() {
 
   while (1) {
 
-    if (digitalRead(MENU_BTN_PIN) == ACTIVE_LOW) {
+    if (digitalRead(UP_BTN_PIN) == ACTIVE_LOW) {  // menu button is broken, use up button
       setIndex++;
       if (setIndex > SET_DAY) {
         break;
@@ -492,28 +492,28 @@ void Watchy::setTime() {
       }
     }
 
-    if (digitalRead(UP_BTN_PIN) == ACTIVE_LOW) {
-      blink = 1;
-      switch (setIndex) {
-      case SET_HOUR:
-        hour == 0 ? (hour = 23) : hour--;
-        break;
-      case SET_MINUTE:
-        minute == 0 ? (minute = 59) : minute--;
-        break;
-      case SET_YEAR:
-        year == 0 ? (year = 99) : year--;
-        break;
-      case SET_MONTH:
-        month == 1 ? (month = 12) : month--;
-        break;
-      case SET_DAY:
-        day == 1 ? (day = 31) : day--;
-        break;
-      default:
-        break;
-      }
-    }
+    // if (digitalRead(UP_BTN_PIN) == ACTIVE_LOW) {
+    //   blink = 1;
+    //   switch (setIndex) {
+    //   case SET_HOUR:
+    //     hour == 0 ? (hour = 23) : hour--;
+    //     break;
+    //   case SET_MINUTE:
+    //     minute == 0 ? (minute = 59) : minute--;
+    //     break;
+    //   case SET_YEAR:
+    //     year == 0 ? (year = 99) : year--;
+    //     break;
+    //   case SET_MONTH:
+    //     month == 1 ? (month = 12) : month--;
+    //     break;
+    //   case SET_DAY:
+    //     day == 1 ? (day = 31) : day--;
+    //     break;
+    //   default:
+    //     break;
+    //   }
+    // }
 
     display.fillScreen(GxEPD_BLACK);
     display.setTextColor(GxEPD_WHITE);
